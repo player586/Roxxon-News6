@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roxxon News Feed</title>
+<style>
+  body {
+    background-color: #121212;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  header {
+    background-color: #1a1a1a;
+    padding: 20px;
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: #FF004F;
+  }
+  section {
+    padding: 20px;
+    border-bottom: 1px solid #333;
+  }
+  h2 {
+    color: #00FFD1;
+  }
+  .post, .comment, .news-item, .podcast-item, .weather-item {
+    background-color: #1a1a1a;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 10px;
+  }
+  .post-header {
+    font-weight: bold;
+  }
+  .verified {
+    color: #1DA1F2;
+    margin-left: 5px;
+    font-size: 16px;
+  }
+  input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: none;
+  }
+  button {
+    margin-top: 5px;
+    background-color: #FFB400;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<header>Roxxon News Feed</header>
+
+<!-- Social Feed Section -->
+<section id="social-feed">
+  <h2>Social Feed</h2>
+  <input id="post-author" placeholder="Your name">
+  <textarea id="post-text" placeholder="Write a post..."></textarea>
+  <button onclick="addPost()">Post</button>
+  <div id="posts"></div>
+</section>
+
+<!-- Weather Section -->
+<section id="weather">
+  <h2>Weather (US Cities)</h2>
+  <div id="weather-list">
+    <div class="weather-item">New York: 72°F, Sunny</div>
+    <div class="weather-item">Los Angeles: 85°F, Sunny</div>
+    <div class="weather-item">Chicago: 65°F, Cloudy</div>
+  </div>
+</section>
+
+<!-- News Section -->
+<section id="news">
+  <h2>World News</h2>
+  <div id="news-list">
+    <div class="news-item">Global markets rise as tech stocks surge.</div>
+    <div class="news-item">Scientists discover new exoplanet in habitable zone.</div>
+    <div class="news-item">New climate report warns of rising sea levels.</div>
+  </div>
+</section>
+
+<!-- Podcasts Section -->
+<section id="podcasts">
+  <h2>Podcasts</h2>
+  <div id="podcast-list">
+    <div class="podcast-item">Joe Rogan: Episode 1 – Technology and AI</div>
+    <div class="podcast-item">Why Files: Episode 42 – The Secret History of Space</div>
+    <div class="podcast-item">Daily News: Episode 10 – World Update</div>
+  </div>
+</section>
+
+<script>
+  // List of real celebrities
+  const verifiedCelebrities = [
+    "Tom Holland",
+    "Zendaya",
+    "Chris Hemsworth",
+    "Robert Downey Jr.",
+    "Beyoncé",
+    "Dwayne Johnson",
+    "Taylor Swift",
+    "Will Smith",
+    "Elon Musk"
+  ];
+
+  // Add Post
+  function addPost() {
+    const authorInput = document.getElementById('post-author');
+    const textArea = document.getElementById('post-text');
+    const postsDiv = document.getElementById('posts');
+    const author = authorInput.value.trim();
+    const text = textArea.value.trim();
+
+    if (!author || !text) return;
+
+    const isVerified = verifiedCelebrities.includes(author);
+
+    const postDiv = document.createElement('div');
+    postDiv.className = 'post';
+    postDiv.innerHTML = `
+      <div class="post-header">
+        ${author} ${isVerified ? '<span class="verified">✔️</span>' : ''}
+      </div>
+      <p>${text}</p>
+      <button onclick="likePost(this)">Like ❤️</button>
+      <button onclick="replyPost(this)">Reply 💬</button>
+      <div class="comments"></div>
+    `;
+    postsDiv.prepend(postDiv);
+
+    // Clear inputs
+    authorInput.value = '';
+    textArea.value = '';
+  }
+
+  // Like Function
+  function likePost(btn) {
+    if (!btn.dataset.liked) {
+      btn.innerText = "Liked ❤️";
+      btn.dataset.liked = "true";
+    } else {
+      btn.innerText = "Like ❤️";
+      delete btn.dataset.liked;
+    }
+  }
+
+  // Reply Function
+  function replyPost(btn) {
+    const comment = prompt("Write a reply:");
+    if (comment) {
+      const commentsDiv = btn.parentElement.querySelector('.comments');
+      const commentDiv = document.createElement('div');
+      commentDiv.className = 'comment';
+      commentDiv.innerText = comment;
+      commentsDiv.appendChild(commentDiv);
+    }
+  }
+</script>
+
+</body>
+</html>
