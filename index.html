@@ -11,7 +11,6 @@
     color: #fff;
     background: url("https://images.pexels.com/photos/4173311/pexels-photo-4173311.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260") center/cover fixed;
   }
-
   header {
     background-color: rgba(0,0,0,0.6);
     text-align: center;
@@ -20,39 +19,33 @@
     font-weight: bold;
     color: #FF004F;
   }
-
   section {
     background-color: rgba(0,0,0,0.6);
     padding: 20px;
     margin: 10px;
     border-radius: 12px;
   }
-
   h2 {
     color: #00FFD1;
   }
-
   .weather-item {
     font-size: 18px;
     margin: 5px 0;
   }
-
   .post, .comment, .news-item, .podcast-item {
     background: rgba(30,30,30,0.85);
     padding: 15px;
     margin: 10px 0;
     border-radius: 10px;
+    cursor: pointer;
   }
-
   .post-header {
     font-weight: bold;
   }
-
   .verified {
     color: #1DA1F2;
     margin-left: 5px;
   }
-
   input, textarea {
     width: 100%;
     padding: 10px;
@@ -60,7 +53,6 @@
     border-radius: 5px;
     border: none;
   }
-
   button {
     background-color: #FFB400;
     border: none;
@@ -70,7 +62,6 @@
     font-weight: bold;
     margin-top: 10px;
   }
-
   #podcast-player iframe {
     border-radius: 12px;
   }
@@ -83,9 +74,7 @@
 <!-- Weather Section -->
 <section id="weather">
   <h2>Chicago Weather 🌆</h2>
-  <div id="weather-info">
-    Loading weather…
-  </div>
+  <div id="weather-info">Loading weather…</div>
 </section>
 
 <!-- Social Feed Section -->
@@ -103,7 +92,7 @@
   <div id="news-list">
     <div class="news-item">Global markets rise as tech stocks surge.</div>
     <div class="news-item">Scientists discover a new exoplanet.</div>
-    <div class="news-item">Climate report: rising sea levels.</div>
+    <div class="news-item">Climate report warns of rising sea levels.</div>
   </div>
 </section>
 
@@ -111,29 +100,38 @@
 <section id="podcasts">
   <h2>Podcasts</h2>
   <div id="podcast-list">
-    <div class="podcast-item" onclick="playPodcast('https://www.youtube.com/embed/9p4Z3j06JxE')">Joe Rogan: Technology</div>
-    <div class="podcast-item" onclick="playPodcast('https://www.youtube.com/embed/3r6r5hj2rjk')">Why Files: Space</div>
-    <div class="podcast-item" onclick="playPodcast('https://www.youtube.com/embed/ZKp6Yg91jQY')">Daily News: World Update</div>
-    <div class="podcast-item" onclick="playPodcast('https://www.youtube.com/embed/H9L9h9YfG8U')">WHYY: The Pulse</div>
-    <div class="podcast-item" onclick="playPodcast('https://www.youtube.com/embed/Lx3iJc6dJ2Q')">B101.1 Morning Show</div>
+    <div class="podcast-item" onclick="playPodcast('https://www.youtube.com/embed/9p4Z3j06JxE')">
+      Joe Rogan: Technology
+    </div>
+    <div class="podcast-item" onclick="playPodcast('https://www.youtube.com/embed/3r6r5hj2rjk')">
+      Why Files: Space
+    </div>
+    <div class="podcast-item" onclick="playPodcast('https://www.youtube.com/embed/ZKp6Yg91jQY')">
+      Daily News: World Update
+    </div>
+    <div class="podcast-item" onclick="playPodcast('https://www.youtube.com/embed/H9L9h9YfG8U')">
+      WHYY: The Pulse
+    </div>
+    <div class="podcast-item" onclick="playPodcast('https://www.youtube.com/embed/Lx3iJc6dJ2Q')">
+      B101.1 Morning Show
+    </div>
   </div>
   <div id="podcast-player" style="margin-top:20px;"></div>
 </section>
 
 <script>
-  // ——— Real Weather Integration ———
+  // ==== REAL WEATHER ====
 
   async function fetchChicagoWeather() {
-    const apiKey = "YOUR_OPENWEATHERMAP_API_KEY"; 
+    const apiKey = "db1e2d124f17a26c1afcd75c70f4a28a"; // ✨ Replace with your API key
     const url = `https://api.openweathermap.org/data/2.5/weather?q=Chicago,US&units=imperial&appid=${apiKey}`;
 
     try {
       const response = await fetch(url);
-      if(!response.ok) {
+      if (!response.ok) {
         document.getElementById("weather-info").innerText = "Weather data unavailable.";
         return;
       }
-
       const data = await response.json();
       const temp = Math.round(data.main.temp);
       const desc = data.weather[0].description;
@@ -141,14 +139,14 @@
         <div class="weather-item">🌡️ Temperature: ${temp}°F</div>
         <div class="weather-item">🌥️ Conditions: ${desc}</div>
       `;
-    } catch (e) {
+    } catch (error) {
       document.getElementById("weather-info").innerText = "Error fetching weather.";
     }
   }
 
   fetchChicagoWeather();
 
-  // ——— Social Feed Logic ———
+  // ==== SOCIAL FEED ====
 
   const verifiedCelebrities = [
     "Tom Holland", "Zendaya", "Chris Hemsworth",
@@ -161,7 +159,7 @@
     const textArea = document.getElementById("post-text");
     const author = authorInput.value.trim();
     const text = textArea.value.trim();
-    if(!author || !text) return;
+    if (!author || !text) return;
 
     const isVerified = verifiedCelebrities.includes(author);
     const postDiv = document.createElement("div");
@@ -187,7 +185,7 @@
 
   function replyPost(btn) {
     const comment = prompt("Write a reply:");
-    if(comment) {
+    if (comment) {
       const div = document.createElement("div");
       div.className = "comment";
       div.innerText = comment;
@@ -195,13 +193,13 @@
     }
   }
 
-  // ——— Podcast Player ———
+  // ==== PODCAST PLAYER ====
 
   function playPodcast(url) {
     document.getElementById("podcast-player").innerHTML =
       `<iframe width="100%" height="300" src="${url}" frameborder="0" allowfullscreen></iframe>`;
   }
 </script>
-db1e2d124f17a26c1afcd75c70f4a28a
+
 </body>
 </html>
